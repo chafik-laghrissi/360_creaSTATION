@@ -1,5 +1,6 @@
 import * as THREE from "three";
 const textureLoader = new THREE.TextureLoader();
+const navigationIcon = textureLoader.load("/textures/360/navigation.png");
 // const images = {
 //   image1: textureLoader.load("textures/360/image1.jpg"),
 //   image2: textureLoader.load("/textures/360/image2.jpg"),
@@ -17,20 +18,16 @@ const textureLoader = new THREE.TextureLoader();
 //     image.wrapS = THREE.RepeatWrapping;
 //   },
 // };
-const navigationIcon=textureLoader.load("/textures/360/navigation.png")
-export default class Stripe {
-  map =  navigationIcon
-  constructor(name, scene, position) {
-    this.position = new THREE.Vector3(
-        -3.664786834853695,
-        -23.18277113381041,
-        44.11085563783491
-      );
-    this.name = name;
-    this.scene = scene;
-    sprite= new THREE.Sprite(
-      new THREE.SpriteMaterial({ map,name })
-    );
-  
-  }
-}
+
+const createStripe = (name, position, multiplyScalarBy = 30) => {
+  position = new THREE.Vector3(position.x, position.y, position.z);
+  const sprite = new THREE.Sprite(
+    new THREE.SpriteMaterial({ map: navigationIcon })
+  );
+  sprite.name = name;
+  sprite.position.copy(
+    position.clone().normalize().multiplyScalar(multiplyScalarBy)
+  );
+  return sprite;
+};
+export { createStripe };
